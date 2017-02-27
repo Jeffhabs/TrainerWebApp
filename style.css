@@ -1,0 +1,147 @@
+#Main-Container {
+  font-family: Droid Sans;
+}
+
+.active {
+  color: green;
+}
+
+.disabled {
+  color: blue;
+}
+
+#content {
+  overflow: hidden;
+}
+
+#content {
+  margin-left: 20px;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  background-color: #c4c4c4;
+}
+
+#nav-bar .md-nav-bar {
+  background-color: #616161;
+  max-height: 570px;
+}
+
+#inner-sidebar {
+  background-color: #c4c4c4;
+}
+
+#line {
+  width: 237px;
+  height: 11px;
+  fill: #424242;
+  margin-left: 8%;
+  float: left;
+}
+
+#name {
+  margin-left: 5%;
+}
+
+li {
+  float: left;
+}
+
+#inner-content {
+  height: 319px;
+  background-color: #ffffff;
+  margin-left: 6.5%;
+  margin-top: 5%;
+  margin-right: 6.9%;
+}
+
+/* sidenav */
+@media (min-width: 600px) {
+  md-sidenav {
+    max-width: 400px;
+    max-height: 570px;
+    opacity: 0.6;
+    border: 1px solid #c8c8c8;
+    background-color: #c4c4c4;
+    color: #474747;
+    }
+}
+
+md-nav-bar .md-button._md-nav-button.md-unselected {
+  color: #ffffff;
+}
+
+md-nav-bar .md-button.md-primary {
+  color: #ffffff;
+}
+
+#banner {
+  height: 91px;
+  background-color: #ff5252;
+}
+
+#box {
+  margin-left: 4%;
+  margin-top: 1%;
+  height: 75px;
+  width: 75px;
+  border-radius: 100px;
+  background-color: #ffffff;
+  float: left;
+}
+
+#client-name {
+  height: 24px;
+  font-family: Droid Sans;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center;
+  margin-left: 2%;
+  margin-top: 5%;
+}
+
+.md-nav-button.md-unselected {
+  color: #FFFFFF;
+}
+
+
+/*.Main-Container {
+  position: relative;
+}
+
+.Content-Container {
+  width: 670px;
+  height: 435px;
+  opacity: 0.69;
+  padding: 0px 10px;
+  border: 1px solid #c8c8c8;
+  background-color: #c4c4c4;
+  font-family: Arial;
+  font-size: 14px;
+  color: #474747;
+
+  float: right;
+  margin-right: 23%;
+  margin-top: 15.3%;
+}
+
+.Side-Bar-Container {
+  width: 290px;
+  height: 570px;
+  opacity: 0.6;
+  padding: 0px 10px;
+  border: 1px solid #c8c8c8;
+  background-color: #c4c4c4;
+  font-family: Arial;
+  font-size: 14px;
+  color: #474747;
+
+  float: left;
+  margin-left: 22%;
+  margin-top: 8%;
+}
+
+#Content-Bar {
+  width: 689px;
+  padding: 0px 10px;
+  height: 91px;
+  background-color: #ff5252;
+}
