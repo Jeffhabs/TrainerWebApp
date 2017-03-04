@@ -2,6 +2,8 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
 
   var clientList = [];
 
+  var workoutList = [];
+
   //AJAX: list clients
   var getClients = function () {
     $http({
@@ -10,18 +12,36 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     }).then(function (response) {
       console.log("success getting clients");
       var clients = response.data;
-      //console.log("clients: ", clients);
+      console.log(clients.length);
 
       clientList.splice(0, clientList.length);
       for (var i = 0; i < clients.length; i++) {
         clientList.push(clients[i]);
       }
+      console.log(clientList);
     }, function () {
       console.error("Error receiving clients");
     });
 
     return clientList;
   };
+
+  var getClient = function(id) {
+    $http({
+      method: 'GET',
+      url: 'http://localhost:8080/client/'+id,
+      data: $httpParamSerializer(id),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function (response) {
+      var client = response.data;
+      console.log("Success getting client: ", client);
+      return client;
+    }, function() {
+      console.error("Error retrieving client");
+    });
+  }
 
   //AJAX: create client
   var createClient = function (data) {
@@ -41,10 +61,14 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   };
   //AJAX: delete clients
   //fix with preflight options
-  var deleteClient = function () {
+  var deleteClient = function (id) {
     $http({
       method: 'DELETE',
-      url: 'http://localhost:8080/clients'
+      url: 'http://localhost:8080/client/'+id,
+      data: $httpParamSerializer(id),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     }).then(function () {
       getClients();
       console.log("succesfully deleted client");
@@ -53,9 +77,83 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     });
   };
 
+  var updateClient = function (id, data) {
+    $http({
+      method: 'PUT',
+      url: 'http://localhost:8080/client/'+id,
+      data: $httpParamSerializer(data),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function (response) {
+      var updatedClient = response.data;
+      getClients();
+      return updatedClient;
+      console.log("Client updated");
+    }, function () {
+      console.log("error updating client.");
+    });
+  };
+
+  var getWorkouts = function (id) {
+    $http({
+      method: 'GET',
+      url: 'http://localhost:8080/workouts/'+id,
+    }).then(function (response) {
+      console.log("success getting workouts");
+      var workouts = response.data;
+      workoutList.splice(0, workoutList.length);
+      for (var i = 0; i < workouts.length; i++) {
+          workoutList.push(workouts[i]);
+      }
+      console.log("Service.getWorkouts: ", workoutList);
+    }, function () {
+      console.log("error retrieving workouts")
+    });
+    return workoutList;
+  };
+
+  var createWorkout = function (id, data) {
+    $http({
+      method: 'POST',
+      url: 'http://localhost:8080/client/'+ id + '/workouts',
+      data: $httpParamSerializer(data),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function (response) {
+      getWorkouts(id);
+      var workout = response.data;
+      console.log("workout created!");
+      return workout;
+    }, function () {
+      console.log("error creating workout")
+    });
+  };
+
+  var deleteWorkouts = function (id, clientId) {
+    $http({
+      method: 'DELETE',
+      url: 'http://localhost:8080/workouts/'+id,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then (function () {
+      getWorkouts(clientId);
+      console.log("success deleting workouts");
+    }, function () {
+      console.log("error deleting workouts");
+    });
+  }
+
   return {
     getClients: getClients,
     createClient: createClient,
-    deleteClient: deleteClient
+    deleteClient: deleteClient,
+    getClient: getClient,
+    updateClient: updateClient,
+    getWorkouts: getWorkouts,
+    createWorkout: createWorkout,
+    deleteWorkouts: deleteWorkouts
   };
 });

@@ -2,73 +2,158 @@
 <head>
   <!-- Angular Material Design style sheet -->
   <link href="node_modules/angular-material/angular-material.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
-<body ng-controller="MainController">
+<body class="MyApp" ng-cloak layout="column" ng-controller="MainController as mc">
+  <div flex layout="row">
 
+    <!-- SIDENAV BAR -->
+    <md-sidenav class="md-white-frame-4dp" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left">
+      <md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="showAdd($event)">
+        <ng-md-icon icon="add" >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+          </svg>
+        </ng-md-icon>
+      </md-button>
 
+      <!-- SIDENAV CONTENT -->
+      <md-content flex layout-padding id="inner-sidebar">
+        <!-- <md-button class="md-raised md-primary" ng-click="deleteMe()">Delete</md-button> -->
+        <md-list flex>
+          <md-list-item ng-click="clickItem(client)" ng-repeat="client in clients" class="md-2-line">
+            <div class="md-list-item-text" layout="column">
+              <h3>{{ client.firstname }}</h3>
+              <h4>{{ client.lastname }}</h4>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
+    <md-content flex id="content">
 
-  <div  id="Main-Container" ng-cloak flex layout="row">
-      <md-sidenav  md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left">
-        <md-content flex layout-padding id="inner-sidebar">
-          <button ng-click="clickMe()">Click Me</button>
-          <md-button ng-click="deleteMe()">Delete</md-button>
-          <md-list flex>
-            <md-list-item ng-repeat="item in clients" class="md-2-line" ng-click="null">
-              <div class="md-list-item-text" layout="column">
-                <h3>{{item.firstname}}</h3>
-                <h4>{{item.lastname}}</h4>
-              </div>
-            </md-list-item>
-          </md-list>
-          <!-- <p>
-          Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit. Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam principes qui, reque justo omnes et quo.
-          </p>
-          <p>
-          Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit. Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam principes qui, reque justo omnes et quo.
-          </p>
-          <p>
-          Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit. Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam principes qui, reque justo omnes et quo.
-          </p>
-          <p>
-          Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit. Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam principes qui, reque justo omnes et quo.
-          </p> -->
-        </md-content>
-      </md-sidenav>
-
-      <md-content flex id="content">
-        <div flex layout="row" id="banner">
-
-          <!-- banner picture -->
-          <div id="box">
-          </div>
-
-          <!-- client name -->
-          <div id="client-name">
-            "Client Name"
-          </div>
-
-
+      <!-- TOOL-BAR -->
+      <md-toolbar layout-padding class="md-accent" layout="row">
+        <div class="md-toolbar-tall">
+          <img ng-src="avatar-1.png" class="md-avatar">
+          <div>{{ clientFirstName }} {{ clientLastName }}</div>
+          <div class="clientName"> {{ clientEmail }} </div>
         </div>
-        <md-nav-bar class="md-accent" id="nav-bar"
-          md-selected-nav-item="currentNavItem"
-          nav-bar-aria-label="navigation links">
-          <md-nav-item md-nav-click="goto('page1')" name="page1">
-            Bio
-          </md-nav-item>
-          <md-nav-item md-nav-click="got('page2')" name="page2">
-            Workouts
-          </md-nav-item>
+      </md-toolbar>
+
+      <!-- NAVIGATION BAR -->
+        <md-nav-bar  md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+          <md-nav-item  md-nav-click="goto('bio')" name="bio">Bio</md-nav-item>
+          <md-nav-item md-nav-click="goto('workouts')" name="workouts">Workouts</md-nav-item>
+
+          <!-- BIO SETTINGS-FAB -->
+          <md-fab-speed-dial ng-cloak ng-show="navBtnIsBio" md-open="false" md-direction="left" class="md-scale md-fab-top-right">
+            <md-fab-trigger>
+              <md-button class="md-fab">
+                <md-icon  aria-label="settings" md-font-icon="icon-settings">menu</md-icon>
+              </md-button>
+            </md-fab-trigger>
+            <!-- FAB-ACTIONS -->
+            <md-fab-actions>
+              <!-- DELETE FAB -->
+              <md-button  ng-click="deleteClient()" aria-label="delete" class="md-fab md-raised md-mini">
+                <md-icon aria-label="delete" md-font-icon="icon-delete">delete</md-icon>
+              </md-button>
+              <!-- EDIT FAB -->
+              <md-button  ng-click="showEdit($event)" aria-label="edit" class="md-fab md-raised md-mini">
+                <md-icon aria-label="edit" md-font-icon="icon-edit">edit</md-icon>
+              </md-button>
+            </md-fab-actions>
+          </md-fab-speed-dial>
+
+          <!-- WORKOUTS SETTINGS FAB -->
+          <!-- <md-fab-speed-dial ng-cloak ng-show="navBtnIsWorkouts" md-open="false" md-direction="left" class="md-scale md-fab-top-right">
+            <md-fab-trigger>
+              <md-button class="md-fab">
+                <md-icon  aria-label="settings" md-font-icon="icon-settings">menu</md-icon>
+              </md-button>
+            </md-fab-trigger> -->
+            <!-- FAB-ACTIONS -->
+            <!-- <md-fab-actions> -->
+              <!-- DELETE FAB -->
+              <!-- <md-button  ng-click="deleteWorkouts($event)" aria-label="delete" class="md-fab md-raised md-mini">
+                <md-icon aria-label="delete" md-font-icon="icon-delete">delete</md-icon>
+              </md-button> -->
+              <!-- EDIT FAB -->
+              <!-- <md-button  ng-click="showWorkoutEdit()" aria-label="edit" class="md-fab md-raised md-mini">
+                <md-icon aria-label="edit" md-font-icon="icon-edit">edit</md-icon>
+              </md-button>
+            </md-fab-actions>
+          </md-fab-speed-dial> -->
+          <md-button class="md-fab md-fab-top-right" ng-show="navBtnIsWorkouts" aria-label="Add" ng-click="showWorkoutEdit()">
+            <ng-md-icon icon="add" >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+              </svg>
+            </ng-md-icon>
+          </md-button>
         </md-nav-bar>
 
-        <md-content flex layout-padding id="inner-content">
-          <p>
-          Sit saepe quaestio reprimique id, duo no congue nominati, cum id nobis facilisi. No est laoreet dissentias, idque consectetuer eam id. Clita possim assueverit cu his, solum virtute recteque et cum. Vel cu luptatum signiferumque, mel eu brute nostro senserit. Blandit euripidis consequat ex mei, atqui torquatos id cum, meliore luptatum ut usu. Cu zril perpetua gubergren pri. Accusamus rationibus instructior ei pro, eu nullam principes qui, reque justo omnes et quo.
-          </p>
+        <!-- BIO PAGE CONTENT -->
+        <md-content flex layout-padding ng-show="navBtnIsBio" class="ng-hide bio-content">
+          <h2 class="summary" >Summary</h2>
+          <md-divider ng-if="!$last"></md-divider>
+          <div class="clientSum"> {{ clientSummary }}</div>
+          <md-divider ng-if="!$last"></md-divider>
+          <div layout="row">
+            <div flex class="subHeader">Age:</div>
+            <div flex> {{ clientAge }} </div>
+            <div flex class="subHeader">Weight:</div>
+            <div flex> {{ clientWeight }} </div>
+            <div flex class="subHeader">Body Fat%:</div>
+            <div flex> {{ clientBodyfat }} </div>
+          </div>
+          <md-divider ng-if="!$last"></md-divider>
+          <div class="subHeader">Address</div>
+          <div flex layout-align="center center" layout="column">
+            <div flex="5" class="address"> {{ clientAddress }} </div>
+            <div flex="5" class="address"> {{ clientCity }}, {{ clientState }} </div>
+            <div flex="5" class="address"> {{ clientPostalCode }} </div>
+          </div>
         </md-content>
-      </md-content>
-  </div>
 
+        <!-- WORKOUT PAGE CONTENT -->
+        <md-content flex layout-padding ng-show="navBtnIsWorkouts" class="ng-hide bio-content">
+          <md-list flex>
+            <h2>Workouts</h2>
+            <md-divider></md-divider>
+            <md-list-item ng-repeat="workout in workouts" class="md-2-line">
+              <div class="workoutList md-list-item-text" layout="column">
+                <h3> Excercise {{ $index+1 }} </h3>
+                <div class="subExcercise"> {{ workout.title }}</div>
+              </div>
+                <div flex class="container" layout-align="center center" layout="row">
+                  <div class="innerContainer" flex layout-align="center center" layout="column">
+                    <div flex="5"> {{ workout.sets }} </div>
+                    <div flex="5">Sets</div>
+                  </div>
+                  <div flex class="innerContainer" layout-align="center center" layout="column">
+                    <div flex="5"> {{ workout.reps }} </div>
+                    <div flex="5">Reps</div>
+                  </div>
+                  <div flex class="innerContainer" layout-align="center center" layout="column">
+                    <div flex="5"> {{ workout.rest }} </div>
+                    <div class="light" flex="5">Rest</div>
+                  </div>
+                  <div flex layout-align="center center" layout="column">
+                    <md-button  ng-click="deleteWorkouts(workout._id)" aria-label="delete forever" class="deleteBtn">
+                      <md-icon aria-label="edit" md-font-icon="icon-edit">delete_forever</md-icon>
+                    </md-button>
+                  </div>
+                </div>
+            </md-list-item>
+          </md-list>
+          <md-divider></md-divider>
+        </md-content>
+
+    </md-content>
+  </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.10/angular.min.js"></script>
     <script src="node_modules/angular-animate/angular-animate.js" type="text/javascript" ></script>
     <script src="node_modules/angular-aria/angular-aria.js" type="text/javascript" ></script>
@@ -76,6 +161,5 @@
     <script src="app.js"></script>
     <script src="controller.js"></script>
     <script src="service.js"></script>
-  </div>
 </body>
 </html>

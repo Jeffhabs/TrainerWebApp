@@ -1,5 +1,11 @@
-#Main-Container {
-  font-family: Droid Sans;
+/*.MyApp md-toolbar md-icon.md-default-theme {
+  color: "red";
+}*/
+.MyApp {
+  padding: 3%;
+}
+#content {
+  overflow: hidden;
 }
 
 .active {
@@ -7,141 +13,107 @@
 }
 
 .disabled {
-  color: blue;
+  color: red;
 }
 
-#content {
-  overflow: hidden;
+.sets {
+  margin-bottom: 8%;
 }
-
-#content {
-  margin-left: 20px;
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  background-color: #c4c4c4;
+.container {
+  margin-top: 3%;
 }
-
-#nav-bar .md-nav-bar {
-  background-color: #616161;
-  max-height: 570px;
+.innerContainer {
 }
-
-#inner-sidebar {
-  background-color: #c4c4c4;
+.light {
+  font-weight: lighter;
 }
-
-#line {
-  width: 237px;
-  height: 11px;
-  fill: #424242;
-  margin-left: 8%;
-  float: left;
-}
-
-#name {
-  margin-left: 5%;
-}
-
-li {
-  float: left;
-}
-
-#inner-content {
-  height: 319px;
-  background-color: #ffffff;
-  margin-left: 6.5%;
-  margin-top: 5%;
-  margin-right: 6.9%;
-}
-
-/* sidenav */
-@media (min-width: 600px) {
-  md-sidenav {
-    max-width: 400px;
-    max-height: 570px;
-    opacity: 0.6;
-    border: 1px solid #c8c8c8;
-    background-color: #c4c4c4;
-    color: #474747;
-    }
-}
-
-md-nav-bar .md-button._md-nav-button.md-unselected {
-  color: #ffffff;
-}
-
-md-nav-bar .md-button.md-primary {
-  color: #ffffff;
-}
-
-#banner {
-  height: 91px;
-  background-color: #ff5252;
-}
-
-#box {
-  margin-left: 4%;
-  margin-top: 1%;
-  height: 75px;
-  width: 75px;
-  border-radius: 100px;
-  background-color: #ffffff;
-  float: left;
-}
-
-#client-name {
-  height: 24px;
-  font-family: Droid Sans;
-  font-size: 20px;
-  color: #ffffff;
+h2 {
   text-align: center;
-  margin-left: 2%;
-  margin-top: 5%;
+  margin-bottom: -.1%;
 }
 
-.md-nav-button.md-unselected {
-  color: #FFFFFF;
+h3 {
+  color: #FF5252;
+}
+.md-list-item-text h4 {
+  color: #FF5252;
+}
+.vertical-divider {
+  border-top-width: 0;
+  border-right-width: 1px;
+  border-right-style: solid;
+  height: 5%
 }
 
-
-/*.Main-Container {
-  position: relative;
+md-list-item.md-2-line .workoutList.md-list-item-text {
+  max-width: 40%;
+  overflow: visible;
+}
+.address {
+  text-align: center;
 }
 
-.Content-Container {
-  width: 670px;
-  height: 435px;
-  opacity: 0.69;
-  padding: 0px 10px;
-  border: 1px solid #c8c8c8;
-  background-color: #c4c4c4;
-  font-family: Arial;
-  font-size: 14px;
-  color: #474747;
-
+.settings-fab {
+  font-size: 36px;
+  color: #ffffff;
   float: right;
-  margin-right: 23%;
-  margin-top: 15.3%;
 }
 
-.Side-Bar-Container {
-  width: 290px;
-  height: 570px;
-  opacity: 0.6;
-  padding: 0px 10px;
-  border: 1px solid #c8c8c8;
-  background-color: #c4c4c4;
-  font-family: Arial;
-  font-size: 14px;
-  color: #474747;
-
-  float: left;
-  margin-left: 22%;
-  margin-top: 8%;
+.clientName {
+  font-size: .7em;
+}
+.clientSum {
+  text-align: center;
+}
+.subHeader {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1em;
+}
+.clientAge {
+  text-align: center;
+  display: inline-flex;
 }
 
-#Content-Bar {
-  width: 689px;
-  padding: 0px 10px;
-  height: 91px;
-  background-color: #ff5252;
+.summary {
+  margin-bottom: -.1%;
+}
+
+.subExcercise {
+  font-size: .89em;
+  font-weight: bold;
+  color: #FF5252;
+}
+
+/* MAIN CONTENT */
+#content {
+  font-family: Droid Sans;
+  margin-left:1%;
+  margin-right:1%;
+  overflow: hidden;
+  background-color:#c4c4c4;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+#content .bio-content {
+  height: 66%;
+  background-color: #ffffff;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+/* SIDE BAR ADD FAB */
+.md-fab {
+  fill: #fff;
+}
+
+/* NAV BAR */
+md-nav-bar .md-nav-bar {
+  background-color: #616161;
+}
+md-nav-bar.md-default-theme .md-button._md-nav-button.md-unselected, md-nav-bar .md-button._md-nav-button.md-unselected {
+  color: #ffffff;
+}
+.md-button.md-default-theme.md-accent, .md-button.md-accent {
+  color: #ffffff;
 }
