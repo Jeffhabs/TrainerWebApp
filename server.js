@@ -5,7 +5,8 @@ var mongoose = require("mongoose");
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
 
-mongoose.connect("mongodb://heroku_b3mknxr1:ctlvhg4gfh2dea79rhjigbhbcu@ds011943.mlab.com:11943/heroku_b3mknxr1");
+//mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
+mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
 
 var Schema = mongoose.Schema;
 
@@ -229,6 +230,7 @@ app.delete("/workouts/:clientId", function (req, res) {
   });
 });
 
-app.listen(8080, function () {
-  console.log("Server running on port 8080");
+var port = process.env.PORT || 8080;
+app.listen(port, function () {
+  console.log("Server running on port: ", port);
 });
