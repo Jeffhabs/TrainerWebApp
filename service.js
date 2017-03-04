@@ -1,5 +1,7 @@
 angular.module("MyFitnessApp").service("ClientService", function ($http, $httpParamSerializer) {
 
+  var localhost= "http://localhost:8080/";
+  var url = "https://agile-dusk-59064.herokuapp.com/"
   var clientList = [];
 
   var workoutList = [];

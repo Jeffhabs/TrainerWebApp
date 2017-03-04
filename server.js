@@ -6,7 +6,8 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
 
 //mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
-mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
+//mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
+mongoose.connect("mongodb:mongodb://jeffhabs:password@ds011943.mlab.com:11943/heroku_b3mknxr1")
 
 var Schema = mongoose.Schema;
 
