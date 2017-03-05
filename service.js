@@ -10,7 +10,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var getClients = function () {
     $http({
       method: 'GET',
-      url: 'http://localhost:8080/clients'
+      url: url+'/clients'
     }).then(function (response) {
       console.log("success getting clients");
       var clients = response.data;
@@ -31,7 +31,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var getClient = function(id) {
     $http({
       method: 'GET',
-      url: 'http://localhost:8080/client/'+id,
+      url: url+'/client/'+id,
       data: $httpParamSerializer(id),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -49,7 +49,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var createClient = function (data) {
     $http({
       method: 'POST',
-      url: 'http://localhost:8080/clients',
+      url: url+'/clients'
       data: $httpParamSerializer(data),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -66,7 +66,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var deleteClient = function (id) {
     $http({
       method: 'DELETE',
-      url: 'http://localhost:8080/client/'+id,
+      url: url+'/client/'+id,
       data: $httpParamSerializer(id),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -82,7 +82,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var updateClient = function (id, data) {
     $http({
       method: 'PUT',
-      url: 'http://localhost:8080/client/'+id,
+      url: url+'/client/'+id,
       data: $httpParamSerializer(data),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -100,7 +100,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var getWorkouts = function (id) {
     $http({
       method: 'GET',
-      url: 'http://localhost:8080/workouts/'+id,
+      url: url+'/workouts/'+id
     }).then(function (response) {
       console.log("success getting workouts");
       var workouts = response.data;
@@ -118,7 +118,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var createWorkout = function (id, data) {
     $http({
       method: 'POST',
-      url: 'http://localhost:8080/client/'+ id + '/workouts',
+      url: url+'/client/'+id+'/workouts',
       data: $httpParamSerializer(data),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -136,7 +136,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var deleteWorkouts = function (id, clientId) {
     $http({
       method: 'DELETE',
-      url: 'http://localhost:8080/workouts/'+id,
+      url: url+'/workouts/'+id,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
