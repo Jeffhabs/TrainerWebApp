@@ -49,7 +49,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var createClient = function (data) {
     $http({
       method: 'POST',
-      url: url+'/clients'
+      url: url+'/clients',
       data: $httpParamSerializer(data),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
