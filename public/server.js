@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
+app.use(express.static('public'));
 
 //mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
 //mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
