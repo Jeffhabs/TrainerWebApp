@@ -71,7 +71,7 @@ app.get("/clients", function (req, res) {
 });
 
 // GET CLIENT BY ID
-app.get("/client/:id", function (req, res) {
+app.get("/clients/:id", function (req, res) {
   console.log("Client ID:", req.params.id);
   Client.findById(req.params.id, function (error, found) {
     if (error || found == null) {
@@ -97,7 +97,7 @@ app.delete("/clients", function (req, res, next) {
 });
 
 // DELETE CLIENT BY ID
-app.delete("/client/:id", function (req, res) {
+app.delete("/clients/:id", function (req, res) {
   Client.findByIdAndRemove(req.params.id, function (err) {
     if (err ) {
       res.sendStatus(404);
@@ -111,7 +111,7 @@ app.delete("/client/:id", function (req, res) {
   });
 });
 
-app.put("/client/:id", function (req, res) {
+app.put("/clients/:id", function (req, res) {
   Client.findById(req.params.id, function (error, client) {
     if (error || client == null) {
       res.sendStatus(404);
@@ -178,7 +178,7 @@ app.post("/clients", function (req, res) {
 });
 
 
-app.post("/client/:id/workouts", function (req, res) {
+app.post("/clients/:id/workouts", function (req, res) {
   var workout = new Workout({
     _owner: req.body.id,
     title: req.body.title,

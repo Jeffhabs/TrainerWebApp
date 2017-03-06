@@ -31,7 +31,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var getClient = function(id) {
     $http({
       method: 'GET',
-      url: url+'/client/'+id,
+      url: url+'/clients/'+id,
       data: $httpParamSerializer(id),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -66,7 +66,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var deleteClient = function (id) {
     $http({
       method: 'DELETE',
-      url: url+'/client/'+id,
+      url: url+'/clients/'+id,
       data: $httpParamSerializer(id),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -82,7 +82,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var updateClient = function (id, data) {
     $http({
       method: 'PUT',
-      url: url+'/client/'+id,
+      url: url+'/clients/'+id,
       data: $httpParamSerializer(data),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -118,7 +118,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var createWorkout = function (id, data) {
     $http({
       method: 'POST',
-      url: url+'/client/'+id+'/workouts',
+      url: url+'/clients/'+id+'/workouts',
       data: $httpParamSerializer(data),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
