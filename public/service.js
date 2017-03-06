@@ -100,7 +100,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
   var getWorkouts = function (id) {
     $http({
       method: 'GET',
-      url: url+'/workouts/'+id
+      url: url+'/clients/'+id+'/workouts'
     }).then(function (response) {
       console.log("success getting workouts");
       var workouts = response.data;
