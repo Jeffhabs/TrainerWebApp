@@ -179,8 +179,9 @@ app.post("/clients", function (req, res) {
 
 
 app.post("/clients/:id/workouts", function (req, res) {
+  console.log("id: ", req.params.id);
   var workout = new Workout({
-    _owner: req.body.id,
+    _owner: req.params.id,
     title: req.body.title,
     sets: req.body.sets,
     reps: req.body.reps,
@@ -201,13 +202,13 @@ app.post("/clients/:id/workouts", function (req, res) {
 });
 
 //GET WORKOUTS
-app.get("/workouts/:clientId", function (req, res) {
-  Workout.find({ _owner: req.params.clientId })
+app.get("/clients/:id/workouts", function (req, res) {
+  Workout.find({_owner: req.params.id})
   .populate('_owner')
   .exec(function (err, workout) {
     if (err) {
       res.sendStatus(404);
-      console.log("error getting client/id/workouts")
+      console.log("error getting client/id/workouts", error)
     } else {
       res.status(200);
       res.header("Access-Control-Allow-Origin", "*");
