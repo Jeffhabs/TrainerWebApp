@@ -103,7 +103,7 @@ app.delete("/clients/:id", function (req, res) {
       res.sendStatus(404);
       return err;
     } else {
-      res.status(200);
+      res.status(200).send();
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       console.log("successfully removed client");
