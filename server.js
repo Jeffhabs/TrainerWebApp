@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-
+var validator = require('mongoose-validate');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(express.static('public'));
@@ -12,19 +12,24 @@ mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessa
 
 var Schema = mongoose.Schema;
 
+function dummyEmailValidator(candidate) {
+  return candidate === 'jeffrey.haberle@gmail.com'
+}
+
 var clientSchema = new Schema({
-  firstname: String,
-  lastname: String,
-  email: String,
-  age: Number,
-  weight: Number,
-  bodyfat: String,
-  address: String,
-  city: String,
-  state: String,
-  postalCode: String,
-  summary: String,
-  phonenumber: String,
+  // firstname: {type: String, required: true, validate: [validator.alpha, 'must be characters a-z,A-Z']},
+  firstname: {type: String, required: true, unique: false, validate: [validator.alpha, 'firstname must be characters a-z,A-Z']},
+  lastname: {type: String, required: true, validate: [validator.alpha, 'lastname must be characters a-z,A-Z']},
+  email: {type: String, required: true, validate: [validator.email, 'invalid email address']},
+  age: {type: Number, required: true, validate: [validator.numeric, 'age must be characters (0-9)']},
+  weight: {type: Number, required: true, validate: [validator.numeric, 'weight must be characters (0-9)']},
+  bodyfat: {type: String, required: true},
+  address: {type: String, required: true},
+  city: {type: String, required: true},
+  state: {type: String, required: true},
+  postalCode: {type: String, required: true, validate: [validator.postalCode, 'invalid postal code']},
+  summary: {type: String, required: true},
+  phonenumber: {type: String, required: true},
   avatar: String
 });
 
@@ -45,7 +50,7 @@ var preflight = function(req, res, next) {
   if ('OPTIONS' == req.method) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', "GET, DELETE, POST, PUT");
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
     res.sendStatus(200);
   } else {
     next();
@@ -103,9 +108,10 @@ app.delete("/clients/:id", function (req, res) {
       res.sendStatus(404);
       return err;
     } else {
-      res.status(200).send();
+      res.status(200);
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send();
       console.log("successfully removed client");
     }
   });
@@ -165,14 +171,26 @@ app.post("/clients", function (req, res) {
     avatar: req.body.avatar
   });
   client.save(function (err, client) {
+    //var err = client.validateSync();
     if (err) {
-      res.sendStatus(500);
-      return err
+      console.log(err.name);
+      if (err.name == 'ValidationError') {
+        for (var e in err.errors) {
+          console.log(err.errors[e].message);
+          res.status(422);
+          res.send("422 Error: "+err.errors[e].message);
+        }
+      } else {
+        console.log(err);
+        res.status(500).send("500 error: error creating client" + err.message);
+        return err
+      }
     } else {
-      res.status(201);
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.json(client);
+      console.log("POST: /clients : ", client);
+      res.sendStatus(201);
+      //res.json(client);
     }
   });
 });
@@ -189,14 +207,13 @@ app.post("/clients/:id/workouts", function (req, res) {
   })
   workout.save( function (err, workout) {
     if (err) {
-      console.log("error saving workout");
-      res.sendStatus(500);
+      console.log("error saving workout", err);
+      res.status(500).json(err);
       return err;
     } else {
-      res.status(201);
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.json(workout);
+      res.status(201).json(workout);
     }
   });
 });
