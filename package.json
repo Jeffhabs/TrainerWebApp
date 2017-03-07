@@ -8,8 +8,8 @@
     "start": "node server.js"
   },
   "engines": {
-    "node":"7.4.x",
-    "npm":"4.1.x"
+    "node": "7.4.x",
+    "npm": "4.1.x"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "angular-material-icons": "^0.7.1",
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
-    "mongoose": "^4.8.4"
+    "mongoose": "^4.8.4",
+    "mongoose-validate": "0.0.5"
   }
 }
