@@ -22,9 +22,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-//mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
-mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
-//mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp")
+mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
+//mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
 
 var Schema = mongoose.Schema;
 
