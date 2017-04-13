@@ -2,13 +2,29 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var validator = require('mongoose-validate');
+var bcrypt = require("bcrypt");
+var passport = require("passport");
+var passportLocal = require("passport-local");
+var session = require("express-session");
+var Trainer = require("./public/Models/trainer");
+
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use(express.static('public'));
+app.use(session({
+   secret: 'secret'
+}));
 
+app.use(passport.initialize());
+app.use(passport.session());
 //mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
-//mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
-mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp")
+mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
+//mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp")
 
 var Schema = mongoose.Schema;
 
@@ -248,6 +264,109 @@ app.delete("/workouts/:clientId", function (req, res) {
       res.send("success");
     }
   });
+});
+
+passport.use(new passportLocal.Strategy({
+  usernameField: 'email'
+},
+function (email, password, done) {
+  Trainer.findOne({ email: email }, function (err, trainer) {
+    if (err) {
+      console.log("error passport local strategy: ", err)
+      return done(err);
+    }
+    if (!trainer) {
+      return done(null, false);
+    }
+    //console.log("trainer passport strategy: ", trainer);
+    trainer.isValidPassword(password, function (isMatch) {
+      if (isMatch) {
+        return done(null, trainer);
+      } else {
+        console.log("invalid password; did not match");
+        return done(null, false);
+      }
+    });
+  });
+}));
+
+passport.serializeUser(function (trainer, done) {
+  done(null, trainer._id);
+});
+
+passport.deserializeUser(function (id, done) {
+  Trainer.findById(id, function(err, trainer) {
+    done(err, trainer);
+  });
+});
+
+//AJAX Create Trainer:
+app.post('/trainers', function (req, res) {
+  var trainer = new Trainer({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      hashedPassword: req.body.password,
+  });
+  trainer.save(function (err, trainer) {
+    if (err) {
+      console.log("error posting to trainers ", err);
+      res.sendStatus(422);
+    } else {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      console.log("POST: /clients : Success");
+      res.sendStatus(201);
+    }
+  });
+});
+
+app.get("/trainers", function (req, res) {
+  Trainer.find(function(err, trainers) {
+    if (err) {
+      res.sendStatus(404);
+      return err;
+    } else {
+      res.status(200);
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.json(trainers);
+    }
+  });
+});
+
+app.get("/trainers/:id", function (req, res) {
+  console.log("Trainer ID: ", req.params.id);
+  Trainer.findById(req.params.id, function (err, found) {
+    if (err || found == null) {
+      res.sendStatus(404);
+      return err;
+    }
+    //success
+    res.status(200);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.json(found);
+  });
+});
+
+app.post("/sessions", passport.authenticate('local'), function (req, res) {
+  //console.log("body: ", req.body);
+  //console.log("session: ", req.session.passport.user);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.status(201);
+  res.json(req.user);
+});
+
+app.get("/me", function (req, res) {
+  if(req.user) {
+    res.status(200);
+    res.json(req.user);
+  } else {
+    //console.log(req);
+    res.sendStatus(401)
+  }
 });
 
 var port = process.env.PORT || 8080;

@@ -1,8 +1,46 @@
-/*.MyApp md-toolbar md-icon.md-default-theme {
-  color: "red";
-}*/
+
+body {
+  padding-top: 50px;
+  min-height: 100%;
+  display: block;
+}
+/* Register Page */
+#registerLoginContainer {
+  max-width: 400px;
+  max-height: 100px;
+  margin-top: 10px;
+  margin: 0 auto;
+}
+
+.register-screen {
+  padding: 20px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 1px 6px rgba(0,0,0,.5);
+  color: #424242;
+}
+
+.space-bot {
+  margin-bottom: 35px;
+}
+
+.text-center {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.divider {
+  height: 1px;
+  overflow: hidden;
+  background-color: white;
+}
+
+md-input-container {
+  display: block;
+}
+
+/* Main App Page*/
 .MyApp {
-  padding: 3%;
 }
 #content {
   overflow: hidden;
@@ -100,6 +138,9 @@ md-list-item.md-2-line .workoutList.md-list-item-text {
   background-color: #ffffff;
   margin-left: 5%;
   margin-right: 5%;
+}
+#main-content {
+  min-height: 90%;
 }
 
 /* SIDE BAR ADD FAB */

@@ -1,13 +1,14 @@
 angular.module("MyFitnessApp").service("ClientService", function ($http, $httpParamSerializer) {
 
-  //var url = "http://localhost:8080";
-  var url = "https://agile-dusk-59064.herokuapp.com"
-  var clientList = [];
+  var url = "http://localhost:8080";
+  //var url = "https://agile-dusk-59064.herokuapp.com"
 
+  var clientList = [];
   var workoutList = [];
+  var trainer;
 
   //AJAX: list clients
-  var getClients = function () {
+  var getClients = function (cb) {
     $http({
       method: 'GET',
       url: url+'/clients'
@@ -21,10 +22,11 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
         clientList.push(clients[i]);
       }
       console.log(clientList);
+      cb(clientList);
     }, function () {
       console.error("Error receiving clients");
+      cb(null);
     });
-
     return clientList;
   };
 
@@ -55,7 +57,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     }).then(function () {
-      getClients();
+      //getClients();
       console.log("Created client");
     }, function () {
       console.log("Error creating client.");
@@ -147,7 +149,56 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     }, function () {
       console.log("error deleting workouts");
     });
-  }
+  };
+
+  var registerTrainer = function (data) {
+    $http({
+      method: 'POST',
+      url: url+'/trainers',
+      data: $httpParamSerializer(data),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function () {
+      console.log("Created trainer");
+    }, function () {
+      console.log("Error creating trainer.");
+    });
+  };
+
+  var getTrainer = function (cb) {
+    $http({
+      method: 'GET',
+      url: url+'/me',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function (response) {
+       trainer = response.data;
+       console.log("Service.getTrainer(): ", trainer);
+       cb(trainer);
+    }, function () {
+      console.log("error retrieving trainer");
+    });
+  };
+
+
+  var loginTrainer = function (data, cb) {
+    $http({
+      method: 'POST',
+      url: url+'/sessions',
+      data: $httpParamSerializer(data),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(function (response) {
+      toSend = response.data
+      cb(toSend);
+    }, function () {
+      cb(null);
+      console.log("Error logging in trainer.");
+    });
+  };
 
   return {
     getClients: getClients,
@@ -157,6 +208,9 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     updateClient: updateClient,
     getWorkouts: getWorkouts,
     createWorkout: createWorkout,
-    deleteWorkouts: deleteWorkouts
+    deleteWorkouts: deleteWorkouts,
+    registerTrainer: registerTrainer,
+    loginTrainer: loginTrainer,
+    getTrainer: getTrainer
   };
 });

@@ -5,8 +5,59 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
-<body class="MyApp" ng-cloak layout="column" ng-controller="MainController as mc">
-  <div flex layout="row">
+<body ng-style="{'background-color': trainer ? 'white': '#9E9E9E'}" translate="no" class="MyApp" ng-cloak ng-controller="MainController as mc">
+
+  <div id="registerLoginContainer" ng-hide="trainer">
+    <div id="register">
+      <div class="register-screen">
+        <form name="registerLoginForm">
+          <div ng-hide="loginSelected" class="space-bot text-center">
+            <h1>Register</h1>
+            <div class="divider"></div>
+          </div>
+          <div ng-show="loginSelected" class="space-bot text-center">
+            <h1>Login</h1>
+            <div class="divider"></div>
+          </div>
+
+          <md-input-container ng-hide="loginSelected">
+            <label>Firstname</label>
+            <input name="firstname" ng-model="firstname" type="text" ng-required="!loginSelected">
+          </md-input-container>
+
+          <md-input-container ng-hide="loginSelected">
+            <label>Lastname</label>
+            <input type="text" ng-model="lastname" ng-required="!loginSelected">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Email</label>
+            <input type="text" ng-model="email" required>
+          </md-input-container>
+
+          <md-input-container>
+            <label>Password</label>
+            <input type="text" ng-model="password" required>
+          </md-input-container>
+        </form>
+
+        <div flex layout="row" layout-align="center center">
+          <md-button  ng-cloak flex="auto"  ng-class="loginSelected == false ? 'md-raised md-accent' : 'md-raised md-primary-hue-2'" ng-click="loginSelected == false ? register($event) : showRegisterPage()" aria-label="Register">
+            <md-icon aria-label="check" md-font-icon="icon-check">check</md-icon> Register
+          </md-button>
+
+          <md-button ng-cloak flex="auto" ng-class="loginSelected == true ? 'md-raised md-accent' : 'md-raised md-primary-hue-2'" ng-click="loginSelected == true ? login($event) : showLoginPage()" aria-label="right-arrow"> Login
+            <md-icon aria-label="arrow_right" md-font-icon="icon-arrow-right">keyboard_arrow_right</md-icon>
+          </md-button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <div id="main-content" flex layout="row" ng-show="trainer">
 
     <!-- SIDENAV BAR -->
     <md-sidenav class="md-white-frame-4dp" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left">
@@ -66,26 +117,6 @@
               </md-button>
             </md-fab-actions>
           </md-fab-speed-dial>
-
-          <!-- WORKOUTS SETTINGS FAB -->
-          <!-- <md-fab-speed-dial ng-cloak ng-show="navBtnIsWorkouts" md-open="false" md-direction="left" class="md-scale md-fab-top-right">
-            <md-fab-trigger>
-              <md-button class="md-fab">
-                <md-icon  aria-label="settings" md-font-icon="icon-settings">menu</md-icon>
-              </md-button>
-            </md-fab-trigger> -->
-            <!-- FAB-ACTIONS -->
-            <!-- <md-fab-actions> -->
-              <!-- DELETE FAB -->
-              <!-- <md-button  ng-click="deleteWorkouts($event)" aria-label="delete" class="md-fab md-raised md-mini">
-                <md-icon aria-label="delete" md-font-icon="icon-delete">delete</md-icon>
-              </md-button> -->
-              <!-- EDIT FAB -->
-              <!-- <md-button  ng-click="showWorkoutEdit()" aria-label="edit" class="md-fab md-raised md-mini">
-                <md-icon aria-label="edit" md-font-icon="icon-edit">edit</md-icon>
-              </md-button>
-            </md-fab-actions>
-          </md-fab-speed-dial> -->
           <md-button class="md-fab md-fab-top-right" ng-show="navBtnIsWorkouts" aria-label="Add" ng-click="showWorkoutEdit()">
             <ng-md-icon icon="add" >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -151,7 +182,6 @@
           </md-list>
           <md-divider></md-divider>
         </md-content>
-
     </md-content>
   </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.10/angular.min.js"></script>

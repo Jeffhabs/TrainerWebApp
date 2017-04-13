@@ -1,14 +1,100 @@
 angular.module("MyFitnessApp").controller("MainController", function ($scope, ClientService, $mdDialog) {
 var imagePath = "avatar-1.png"
 
-$scope.clients = ClientService.getClients();
+/* REGISTER/LOGIN PAGE */
+$scope.loginSelected = false;
+// Using ng-show/hide with trainer
+//$scope.trainer;
+ClientService.getTrainer(function (trainer) {
+  if(trainer) {
+    $scope.trainer = trainer
+  }
+});
+
+$scope.showLoginPage = function () {
+  $scope.loginSelected = true;
+};
+
+$scope.login = function (ev) {
+  var isValid = $scope.registerLoginForm.$valid;
+  if (isValid) {
+    ClientService.loginTrainer({
+      email: $scope.email,
+      password: $scope.password
+    }, function (trainer) {
+        if (trainer != null) {
+          $scope.trainer = trainer;
+          console.log("login call back trainer ", $scope.trainer);
+        } else {
+          $mdDialog.show(
+            $mdDialog.alert()
+            .clickOutsideToClose(true)
+            .title('Error invalid email/password')
+            .textContent('Sorry, the email/password was incorrect.')
+            .ariaLabel('Invalid Form Alert')
+            .ok('Got it!')
+            .targetEvent(ev)
+          );
+        }
+    });
+  } else {
+    $mdDialog.show(
+      $mdDialog.alert()
+      .clickOutsideToClose(true)
+      .title('Error invalid form')
+      .textContent('Please fill in all required form fields.')
+      .ariaLabel('Invalid Form Alert')
+      .ok('Got it!')
+      .targetEvent(ev)
+    );
+    console.log("error invalid registration form");
+  }
+  console.log("logging in trainer");
+};
+
+$scope.showRegisterPage = function () {
+  $scope.loginSelected = false;
+};
+
+$scope.register = function (ev) {
+  console.log("registering trainer");
+  var isValid = $scope.registerLoginForm.$valid;
+  if (isValid) {
+    ClientService.registerTrainer({
+      firstname: $scope.firstname,
+      lastname: $scope.lastname,
+      email: $scope.email,
+      password: $scope.password
+    });
+  } else {
+    $mdDialog.show(
+      $mdDialog.alert()
+      .clickOutsideToClose(true)
+      .title('Error invalid form')
+      .textContent('Please fill in all required form fields.')
+      .ariaLabel('Invalid Form Alert')
+      .ok('Got it!')
+      .targetEvent(ev)
+    );
+    console.log("error invalid registration form");
+  }
+};
+
+/* MAIN PAGE */
+$scope.clients;
+ClientService.getClients(function (clients) {
+  if (clients) {
+    $scope.clients = clients
+  }
+});
+
 $scope.clientID;
 $scope.clickedClient;
 $scope.workouts;
 
-//bio page
+// bio page
 $scope.navBtnIsBio = false;
-
+// workouts page
 $scope.navBtnIsWorkouts = false;
 
   $scope.goto = function (page) {
@@ -59,8 +145,6 @@ $scope.navBtnIsWorkouts = false;
       $mdDialog.cancel();
     };
 
-
-
     $scope.addWorkout = function (id) {
       console.log("addWorkout id: ", id);
       var isValid = $scope.editWorkoutForm.$valid;
@@ -89,7 +173,6 @@ $scope.navBtnIsWorkouts = false;
     };
 
     $scope.updateClient = function(id, client) {
-      console.log("updateClient line 37:" , client);
       var isValid = $scope.editForm.$valid;
       if (isValid) {
         ClientService.updateClient(id, {
@@ -141,6 +224,11 @@ $scope.navBtnIsWorkouts = false;
           avatar: imagePath
         })
         console.log("Form is valid");
+        ClientService.getClients( function (clients) {
+          if(clients) {
+            $scope.clients = clients;
+          }
+        });
         $mdDialog.hide();
       } else {
         console.log("Form is invalid!");

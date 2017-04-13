@@ -2,6 +2,7 @@
 #### Resources
   * Clients
   * Workouts
+  * Trainers
 
 #### Clients Attributes
   * id
@@ -26,6 +27,13 @@
   * sets
   * reps
   * rest
+
+#### Trainer Attributes
+  * id
+  * firstname
+  * lastname
+  * email
+  * password
 
 #### REST Endpoints
 HTTP METHOD | Endpoint | Usage | Returns
