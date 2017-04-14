@@ -69,6 +69,15 @@ $scope.register = function (ev) {
       email: $scope.email,
       password: $scope.password
     });
+    $mdDialog.show(
+      $mdDialog.alert()
+      .clickOutsideToClose(true)
+      .title("Success!")
+      .textContent("Registration successfull, please click login to continue.")
+      .ariaLabel("successfull registration")
+      .ok('Got it!')
+      .targetEvent(ev)
+    );
   } else {
     $mdDialog.show(
       $mdDialog.alert()
@@ -81,15 +90,6 @@ $scope.register = function (ev) {
     );
     console.log("error invalid registration form");
   }
-  $mdDialog.show(
-    $mdDialog.alert()
-    .clickOutsideToClose(true)
-    .title("Success!")
-    .textContent("Registration successfull, please click login to continue.")
-    .ariaLabel("successfull registration")
-    .ok('Got it!')
-    .targetEvent(ev)
-  );
 };
 
 /* MAIN PAGE */
