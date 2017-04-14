@@ -4,11 +4,13 @@ var imagePath = "avatar-1.png"
 /* REGISTER/LOGIN PAGE */
 $scope.loginSelected = false;
 // Using ng-show/hide with trainer
-//$scope.trainer;
+// if there is a trainer authenticated
+$scope.trainer;
 ClientService.getTrainer(function (trainer) {
   if(trainer) {
     $scope.trainer = trainer
   }
+  $scope.clients = ClientService.getClients();
 });
 
 $scope.showLoginPage = function () {
@@ -24,6 +26,7 @@ $scope.login = function (ev) {
     }, function (trainer) {
         if (trainer != null) {
           $scope.trainer = trainer;
+          $scope.clients = ClientService.getClients();
           console.log("login call back trainer ", $scope.trainer);
         } else {
           $mdDialog.show(
@@ -82,11 +85,12 @@ $scope.register = function (ev) {
 
 /* MAIN PAGE */
 $scope.clients;
-ClientService.getClients(function (clients) {
-  if (clients) {
-    $scope.clients = clients
-  }
-});
+
+// ClientService.getClients(function (clients) {
+//   if (clients) {
+//     $scope.clients = clients
+//   }
+// });
 
 $scope.clientID;
 $scope.clickedClient;
@@ -160,9 +164,9 @@ $scope.navBtnIsWorkouts = false;
         $mdDialog.hide();
       } else {
         console.log("error adding workout");
-      }
-    }
-  }
+      };
+    };
+  };
 
   function EditDialogController($scope, $mdDialog) {
     $scope.hide = function() {
@@ -224,11 +228,6 @@ $scope.navBtnIsWorkouts = false;
           avatar: imagePath
         })
         console.log("Form is valid");
-        ClientService.getClients( function (clients) {
-          if(clients) {
-            $scope.clients = clients;
-          }
-        });
         $mdDialog.hide();
       } else {
         console.log("Form is invalid!");

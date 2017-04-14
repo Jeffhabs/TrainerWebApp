@@ -1,14 +1,14 @@
 angular.module("MyFitnessApp").service("ClientService", function ($http, $httpParamSerializer) {
 
-  //var url = "http://localhost:8080";
-  var url = "https://desolate-oasis-69696.herokuapp.com"
+  var url = "http://localhost:8080";
+  //var url = "https://desolate-oasis-69696.herokuapp.com"
 
   var clientList = [];
   var workoutList = [];
   var trainer;
 
   //AJAX: list clients
-  var getClients = function (cb) {
+  var getClients = function () {
     $http({
       method: 'GET',
       url: url+'/clients'
@@ -16,16 +16,13 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
       console.log("success getting clients");
       var clients = response.data;
       console.log(clients.length);
-
       clientList.splice(0, clientList.length);
       for (var i = 0; i < clients.length; i++) {
         clientList.push(clients[i]);
       }
       console.log(clientList);
-      cb(clientList);
     }, function () {
       console.error("Error receiving clients");
-      cb(null);
     });
     return clientList;
   };
@@ -57,7 +54,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     }).then(function () {
-      //getClients();
+      getClients();
       console.log("Created client");
     }, function () {
       console.log("Error creating client.");

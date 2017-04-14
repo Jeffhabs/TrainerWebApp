@@ -17,7 +17,9 @@ app.use(function (req, res, next) {
 });
 app.use(express.static('public'));
 app.use(session({
-   secret: 'secret'
+   secret: 'secret',
+   resave: false,
+   saveUninitialized: false
 }));
 
 app.use(passport.initialize());
@@ -77,17 +79,21 @@ app.use(preflight);
 // ROURTER
 // GET ALL CLIENTS
 app.get("/clients", function (req, res) {
-  Client.find(function(err, clients) {
-    if (err) {
-      res.sendStatus(404);
-      return (err)
-    } else {
-      res.status(200);
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.json(clients);
-    }
-  });
+  if (req.user) {
+    Client.find(function(err, clients) {
+      if (err) {
+        res.sendStatus(404);
+        return (err)
+      } else {
+        res.status(200);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.json(clients);
+      }
+    });
+  } else {
+    res.sendStatus(401);
+  }
 });
 
 // GET CLIENT BY ID
@@ -350,8 +356,6 @@ app.get("/trainers/:id", function (req, res) {
 });
 
 app.post("/sessions", passport.authenticate('local'), function (req, res) {
-  //console.log("body: ", req.body);
-  //console.log("session: ", req.session.passport.user);
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.status(201);
@@ -363,7 +367,6 @@ app.get("/me", function (req, res) {
     res.status(200);
     res.json(req.user);
   } else {
-    //console.log(req);
     res.sendStatus(401)
   }
 });
