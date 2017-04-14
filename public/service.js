@@ -1,7 +1,7 @@
 angular.module("MyFitnessApp").service("ClientService", function ($http, $httpParamSerializer) {
 
   //var url = "http://localhost:8080";
-  var url = "https://desolate-oasis-69696.herokuapp.com/"
+  var url = "https://desolate-oasis-69696.herokuapp.com"
 
   var clientList = [];
   var workoutList = [];
