@@ -102,10 +102,10 @@
       <!-- NAVIGATION BAR -->
         <md-nav-bar  md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
           <md-nav-item  md-nav-click="goto('bio')" name="bio">Bio</md-nav-item>
-          <md-nav-item md-nav-click="goto('workouts')" name="workouts">Workouts</md-nav-item>
+          <md-nav-item  md-nav-click="goto('workouts')" name="workouts">Workouts</md-nav-item>
 
           <!-- BIO SETTINGS-FAB -->
-          <md-fab-speed-dial ng-cloak ng-show="navBtnIsBio" md-open="false" md-direction="left" class="md-scale md-fab-top-right">
+          <md-fab-speed-dial ng-cloak ng-show="showFab" md-open="false" md-direction="left" class="md-scale md-fab-top-right">
             <md-fab-trigger>
               <md-button class="md-fab">
                 <md-icon  aria-label="settings" md-font-icon="icon-settings">menu</md-icon>
@@ -113,17 +113,16 @@
             </md-fab-trigger>
             <!-- FAB-ACTIONS -->
             <md-fab-actions>
-
               <!-- LOGOUT FAB --->
               <md-button ng-click="logout($event)" aria-label="logout" class="md-fab md-raised md-mini">
                 <md-icon aria-label="logout" md-font-icon="icon-logout">exit_to_app</md-icon>
               </md-button>
               <!-- DELETE FAB -->
-              <md-button  ng-click="deleteClient()" aria-label="delete" class="md-fab md-raised md-mini">
+              <md-button  ng-disabled="!clientID" ng-click="deleteClient()" aria-label="delete" class="md-fab md-raised md-mini">
                 <md-icon aria-label="delete" md-font-icon="icon-delete">delete</md-icon>
               </md-button>
               <!-- EDIT FAB -->
-              <md-button  ng-click="showEdit($event)" aria-label="edit" class="md-fab md-raised md-mini">
+              <md-button  ng-disabled="!clientID" ng-click="showEdit($event)" aria-label="edit" class="md-fab md-raised md-mini">
                 <md-icon aria-label="edit" md-font-icon="icon-edit">edit</md-icon>
               </md-button>
 

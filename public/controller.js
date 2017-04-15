@@ -35,6 +35,8 @@ $scope.login = function (ev) {
           $scope.trainerFirstName = firstname;
           $scope.trainerLastName = lastname;
           $scope.clients = ClientService.getClients();
+          //$scope.navBtnIsBio = false;
+          //$scope.navBtnIsWorkouts = false;
           console.log("login call back trainer ", $scope.trainer);
         } else {
           $mdDialog.show(
@@ -129,15 +131,18 @@ $scope.workouts;
 
 // bio page
 $scope.navBtnIsBio = false;
+$scope.showFab = true;
 // workouts page
 $scope.navBtnIsWorkouts = false;
 
   $scope.goto = function (page) {
     if ( page == 'workouts') {
       $scope.navBtnIsBio = false;
+      $scope.showFab = false;
       $scope.navBtnIsWorkouts = true;
     } else {
       $scope.navBtnIsBio = true;
+      $scope.showFab = true;
       $scope.navBtnIsWorkouts = false;
     }
   }
@@ -283,6 +288,7 @@ $scope.navBtnIsWorkouts = false;
     $scope.clickedClient = client;
 
     $scope.navBtnIsBio = true;
+    $scope.showFab = true;
     $scope.navBtnIsWorkouts = false;
 
     //GRAB DATA IN LOCAL VARIABLE FIRST
@@ -326,6 +332,7 @@ $scope.navBtnIsWorkouts = false;
      console.log("deleting client")
      ClientService.deleteClient($scope.clientID);
      $scope.navBtnIsBio = false;
+     // FIXME: $scope.showFab = true?
    }, function() {
      console.log("errror deleting client");
    });

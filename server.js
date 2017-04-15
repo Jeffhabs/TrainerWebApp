@@ -25,6 +25,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 mongoose.connect("mongodb://jeffhabs:password@ds119020.mlab.com:19020/myfitnessapp");
+// local database
 //mongoose.connect("mongodb://localhost:27017/MyFitnessApp");
 
 var Schema = mongoose.Schema;
@@ -34,7 +35,10 @@ function dummyEmailValidator(candidate) {
 }
 
 var clientSchema = new Schema({
-  // firstname: {type: String, required: true, validate: [validator.alpha, 'must be characters a-z,A-Z']},
+  _owner: {
+     type: Schema.Types.ObjectId,
+     ref: 'Trainer'
+  },
   firstname: {type: String, required: true, unique: false, validate: validator.isAlpha()},
   lastname: {type: String, required: true, validate: validator.isAlpha()},
   email: {type: String, required: true, validate: validator.isEmail()},
@@ -80,7 +84,10 @@ app.use(preflight);
 // GET ALL CLIENTS
 app.get("/clients", function (req, res) {
   if (req.user) {
-    Client.find(function(err, clients) {
+    console.log("user id ", req.user._id);
+    Client.find({_owner: req.user._id})
+    .populate('_owner')
+    .exec(function (err, clients) {
       if (err) {
         res.sendStatus(404);
         return (err)
@@ -177,6 +184,7 @@ app.put("/clients/:id", function (req, res) {
 // CREATE CLIENT
 app.post("/clients", function (req, res) {
   var client = new Client({
+    _owner: req.user._id,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
@@ -192,30 +200,16 @@ app.post("/clients", function (req, res) {
     avatar: req.body.avatar
   });
   client.save(function (err, client) {
-    //var err = client.validateSync();
-    if (err) {
-      console.log(err.name);
-      if (err.name == 'ValidationError') {
-        for (var e in err.errors) {
-          console.log(err.errors[e].message);
-          res.status(422);
-          res.send("422 Error: "+err.errors[e].message);
-        }
-      } else {
-        console.log(err);
-        res.status(500).send("500 error: error creating client" + err.message);
-        return err
-      }
-    } else {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      console.log("POST: /clients : ", client);
-      res.sendStatus(201);
-      //res.json(client);
-    }
+    // if(!err) {
+    //   Client.find({_owner: req.user._id})
+    //   .populate('_owner')
+    //   .execute(function (err, clients) {
+    //     res.sendStatus(201);
+    //   });
+    // }
+    res.sendStatus(201);
   });
 });
-
 
 app.post("/clients/:id/workouts", function (req, res) {
   console.log("id: ", req.params.id);
