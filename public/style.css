@@ -100,6 +100,10 @@ md-list-item.md-2-line .workoutList.md-list-item-text {
 .clientName {
   font-size: .7em;
 }
+
+.welcome {
+  font-size: .7em;
+}
 .clientSum {
   text-align: center;
 }

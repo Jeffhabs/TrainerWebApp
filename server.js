@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-var validator = require('mongoose-validate');
+var validator = require('mongoose-validators');
 var bcrypt = require("bcrypt");
 var passport = require("passport");
 var passportLocal = require("passport-local");
@@ -35,16 +35,16 @@ function dummyEmailValidator(candidate) {
 
 var clientSchema = new Schema({
   // firstname: {type: String, required: true, validate: [validator.alpha, 'must be characters a-z,A-Z']},
-  firstname: {type: String, required: true, unique: false, validate: [validator.alpha, 'firstname must be characters a-z,A-Z']},
-  lastname: {type: String, required: true, validate: [validator.alpha, 'lastname must be characters a-z,A-Z']},
-  email: {type: String, required: true, validate: [validator.email, 'invalid email address']},
-  age: {type: Number, required: true, validate: [validator.numeric, 'age must be characters (0-9)']},
-  weight: {type: Number, required: true, validate: [validator.numeric, 'weight must be characters (0-9)']},
+  firstname: {type: String, required: true, unique: false, validate: validator.isAlpha()},
+  lastname: {type: String, required: true, validate: validator.isAlpha()},
+  email: {type: String, required: true, validate: validator.isEmail()},
+  age: {type: Number, required: true, validate: validator.isNumeric()},
+  weight: {type: Number, required: true, validate: validator.isNumeric()},
   bodyfat: {type: String, required: true},
   address: {type: String, required: true},
   city: {type: String, required: true},
   state: {type: String, required: true},
-  postalCode: {type: String, required: true, validate: [validator.postalCode, 'invalid postal code']},
+  postalCode: {type: String, required: true, validate: validator.isNumeric()},
   summary: {type: String, required: true},
   phonenumber: {type: String, required: true},
   avatar: String
@@ -368,6 +368,16 @@ app.get("/me", function (req, res) {
     res.json(req.user);
   } else {
     res.sendStatus(401)
+  }
+});
+
+app.get("/logout", function (req, res) {
+  if(req.user) {
+    req.logout();
+    res.status(200);
+    res.json(req.user);
+  } else {
+    res.sendStatus(401);
   }
 });
 

@@ -8,7 +8,11 @@ $scope.loginSelected = false;
 $scope.trainer;
 ClientService.getTrainer(function (trainer) {
   if(trainer) {
-    $scope.trainer = trainer
+    $scope.trainer = trainer;
+    firstname = trainer.firstname;
+    lastname = trainer.lastname;
+    $scope.trainerFirstName = firstname;
+    $scope.trainerLastName = lastname;
   }
   $scope.clients = ClientService.getClients();
 });
@@ -26,6 +30,10 @@ $scope.login = function (ev) {
     }, function (trainer) {
         if (trainer != null) {
           $scope.trainer = trainer;
+          firstname = trainer.firstname;
+          lastname = trainer.lastname;
+          $scope.trainerFirstName = firstname;
+          $scope.trainerLastName = lastname;
           $scope.clients = ClientService.getClients();
           console.log("login call back trainer ", $scope.trainer);
         } else {
@@ -55,6 +63,14 @@ $scope.login = function (ev) {
   console.log("logging in trainer");
 };
 
+$scope.logout = function () {
+  ClientService.logoutTrainer(function (trainer) {
+    if (trainer) {
+      $scope.trainer = null;
+    }
+  });
+}
+
 $scope.showRegisterPage = function () {
   $scope.loginSelected = false;
 };
@@ -68,16 +84,29 @@ $scope.register = function (ev) {
       lastname: $scope.lastname,
       email: $scope.email,
       password: $scope.password
+    }, function (response) {
+      if(response.status === 422) {
+        $mdDialog.show(
+          $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title("Invalid!")
+          .textContent("Invalid email, please try again.")
+          .ariaLabel("invalid registration")
+          .ok('Got it!')
+          .targetEvent(ev)
+        );
+      } else {
+        $mdDialog.show(
+          $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title("Success!")
+          .textContent("Registration successfull, please click login to continue.")
+          .ariaLabel("successfull registration")
+          .ok('Got it!')
+          .targetEvent(ev)
+        );
+      }
     });
-    $mdDialog.show(
-      $mdDialog.alert()
-      .clickOutsideToClose(true)
-      .title("Success!")
-      .textContent("Registration successfull, please click login to continue.")
-      .ariaLabel("successfull registration")
-      .ok('Got it!')
-      .targetEvent(ev)
-    );
   } else {
     $mdDialog.show(
       $mdDialog.alert()
@@ -94,13 +123,6 @@ $scope.register = function (ev) {
 
 /* MAIN PAGE */
 $scope.clients;
-
-// ClientService.getClients(function (clients) {
-//   if (clients) {
-//     $scope.clients = clients
-//   }
-// });
-
 $scope.clientID;
 $scope.clickedClient;
 $scope.workouts;

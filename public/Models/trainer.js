@@ -1,5 +1,6 @@
 var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
+var validator = require('mongoose-validators');
 
 var Schema = mongoose.Schema;
 
@@ -8,7 +9,7 @@ var SALT = 10;
 var trainerSchema = new Schema({
   firstname: {type: String, required: true},
   lastname: {type: String, required: true},
-  email: {type: String, required: true},
+  email: {type: String, required: true, validate: validator.isEmail()},
   hashedPassword: {type: String, required: true}
 });
 

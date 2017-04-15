@@ -1,7 +1,7 @@
 angular.module("MyFitnessApp").service("ClientService", function ($http, $httpParamSerializer) {
 
-  //var url = "http://localhost:8080";
-  var url = "https://desolate-oasis-69696.herokuapp.com"
+  var url = "http://localhost:8080";
+  //var url = "https://desolate-oasis-69696.herokuapp.com"
 
   var clientList = [];
   var workoutList = [];
@@ -148,7 +148,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     });
   };
 
-  var registerTrainer = function (data) {
+  var registerTrainer = function (data, cb) {
     $http({
       method: 'POST',
       url: url+'/trainers',
@@ -156,9 +156,13 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }).then(function () {
+    }).then(function (response) {
+      cb(response);
       console.log("Created trainer");
-    }, function () {
+    }, function (response) {
+      if(response.status === 422) {
+        cb(response)
+      }
       console.log("Error creating trainer.");
     });
   };
@@ -197,6 +201,21 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     });
   };
 
+  var logoutTrainer = function (cb) {
+    $http({
+      method: 'GET',
+      url: url+'/logout',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then( function (response) {
+      console.log("success logging out trainer.");
+      cb(response);
+    }, function () {
+      console.log("error logging out trainer.");
+    });
+  };
+
   return {
     getClients: getClients,
     createClient: createClient,
@@ -208,6 +227,7 @@ angular.module("MyFitnessApp").service("ClientService", function ($http, $httpPa
     deleteWorkouts: deleteWorkouts,
     registerTrainer: registerTrainer,
     loginTrainer: loginTrainer,
-    getTrainer: getTrainer
+    getTrainer: getTrainer,
+    logoutTrainer: logoutTrainer
   };
 });
