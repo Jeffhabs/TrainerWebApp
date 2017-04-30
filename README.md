@@ -1,4 +1,5 @@
 # Personal Trainer Web Application
+###### Demo username: test8@gmail.com password: qqqqqq
 #### Resources
   * Clients
   * Workouts
