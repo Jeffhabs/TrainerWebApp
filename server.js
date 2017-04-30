@@ -369,7 +369,6 @@ app.get("/logout", function (req, res) {
   if(req.user) {
     req.logout();
     res.status(200);
-    res.json(req.user);
   } else {
     res.sendStatus(401);
   }

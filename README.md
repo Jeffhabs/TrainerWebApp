@@ -1,4 +1,4 @@
-# s17-project1-Jeffhabs
+# Personal Trainer Web Application
 #### Resources
   * Clients
   * Workouts
